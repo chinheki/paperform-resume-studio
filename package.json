@@ -1,1 +1,1 @@
-{"name":"paperform-resume-studio","private":true,"version":"1.0.0","description":"Browser-local Markdown to PDF with exact PDF preview","scripts":{"dev":"node server.mjs","check":"node --check dist/app.js"},"type":"module"}
+{"name":"paperform-resume-studio","private":true,"version":"1.0.0","description":"Browser-local Markdown to PDF with exact PDF preview","scripts":{"dev":"node server.mjs","check":"node --check dist/app.js && node scripts/check-static.mjs"},"type":"module"}

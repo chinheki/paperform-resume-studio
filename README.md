@@ -2,6 +2,14 @@
 
 浏览器内将 Markdown 转为 PDF，再用 PDF.js 显示相同 PDF 字节。下载保存已经预览的 Blob，不走第二套打印或排版流程。
 
+在线使用：https://chinheki.github.io/paperform-resume-studio/
+
+## 自动部署
+
+`.github/workflows/pages.yml` 在推送 `main` 或手动触发时运行：校验 JavaScript 和静态资源，然后将 `dist` 发布到 GitHub Pages。不需要 npm 安装、构建服务器或额外部署密钥。
+
+仓库的 Settings → Pages → Source 使用 **GitHub Actions**。网页是公开静态站点，不需要 ChatGPT 登录；文档仅在访问者自己的浏览器处理，本机草稿保存在当前站点的 localStorage。不同域名之间不会自动迁移旧草稿，可通过导出/导入 Markdown 转移。
+
 ## 本地运行
 
 安装有 Node.js 的电脑，在项目目录执行 `node server.mjs`，浏览器打开 http://127.0.0.1:4173。没有运行时 npm 依赖。
@@ -14,7 +22,7 @@
 - 内嵌 Noto Sans SC 正体与粗体，PDF 文字可选择、链接可点击。
 - 真 PDF 分页预览、缩放、版本 SHA-256；有未同步修改时禁止下载旧版。
 - 标题孤行处理、表头重复、表格行不拆分、手动分页。
-- 默认私有 Sites 发布，静态托管，无文档上传接口、无分析统计脚本。
+- GitHub Pages 静态托管，无文档上传接口、无分析统计脚本。
 
 ## 支持边界
 
