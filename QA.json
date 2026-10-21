@@ -1,0 +1,21 @@
+{
+  "date": "2026-10-21",
+  "browser": "Chromium via Codex in-app browser",
+  "checks": {
+    "javascriptSyntax": "passed",
+    "realPdfPreview": "passed",
+    "downloadMatchesPreviewSha256": "passed for default and compact sample",
+    "defaultSample": "two A4 pages, full content, project heading kept with body",
+    "compactSample": "one A4 page, full content including END-OF-RESUME",
+    "chineseRegularAndBoldFontsEmbedded": true,
+    "manualPageBreakAnd65RowTable": "four pages; all 65 rows, repeated header on 3 table pages, end marker retained",
+    "dirtyStateDisablesDownload": true,
+    "unsupportedImageBlocksExport": true,
+    "normalSampleBrowserErrors": []
+  },
+  "previewDownloadHashes": {
+    "classic": "3e5cdee8c7b3d18057d9d467ff5120285904586ab2b0be5a5d557cee38c26f89",
+    "compact": "7859cdfa6c731f734bb2cc87e383e00900b925d42a0ab9c35014c16da15f3332"
+  },
+  "limits": ["No HTML/CSS, images, math or Mermaid rendering", "Font coverage for rare Unicode/emoji requires preview inspection", "Reader anti-aliasing can differ despite identical PDF bytes", "No mobile-device browser verification"]
+}

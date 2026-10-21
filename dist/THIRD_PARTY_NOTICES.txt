@@ -1,0 +1,9 @@
+Paperform / 纸间
+
+pdfmake 0.2.20: MIT License; https://github.com/bpampuch/pdfmake
+Marked 15.0.12: MIT License; https://github.com/markedjs/marked
+PDF.js 4.10.38: Apache License 2.0; https://github.com/mozilla/pdf.js
+Noto Sans SC Regular and Bold: SIL Open Font License 1.1; https://github.com/notofonts/noto-cjk
+The font license is included in fonts/OFL.txt. Library license files are included under vendor/.
+
+These assets are distributed from this site's own origin. No user document is sent to a conversion API.
