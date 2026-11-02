@@ -1,0 +1,52 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>Paperform clipboard regression checks</title>
+<h1 id="result">Running</h1><pre id="details"></pre><textarea id="target" aria-label="Test paste target"></textarea>
+<script type="module">
+import {htmlToMarkdown,readClipboard,installPasteHandler} from '/clipboard.js';
+const results=[];
+function test(name,run){try{run();results.push({name,passed:true});}catch(error){results.push({name,passed:false,error:error.message});}}
+function assert(condition,message){if(!condition)throw new Error(message);}
+test('headings, emphasis, link and nested lists',()=>{
+ const md=htmlToMarkdown('<h1>简历</h1><p><strong>前端</strong>与<em>设计</em> <a href="https://example.com">作品</a></p><ul><li>项目一<ul><li>子项目</li></ul></li></ul>');
+ assert(md.includes('# 简历')&&md.includes('**前端**')&&md.includes('*设计*')&&md.includes('[作品](https://example.com)')&&md.includes('-   项目一')&&md.includes('子项目'),md);
+});
+test('spreadsheet table without TH preserves pipes and content',()=>{
+ const md=htmlToMarkdown('<table><tbody><tr><td>技能</td><td>说明</td></tr><tr><td>A | B</td><td><b>熟练</b><br>中文</td></tr></tbody></table>');
+ assert(md.includes('| 技能 | 说明 |')&&md.includes('| --- | --- |')&&md.includes('A \\| B')&&md.includes('**熟练**')&&md.includes('中文')&&!md.includes('<table'),md);
+});
+test('Word inline styles and heading classes',()=>{
+ const md=htmlToMarkdown('<p class="MsoHeading2">工作经历</p><p><span style="font-weight:700">重点</span> <span style="font-style:italic">说明</span></p>');
+ assert(md.includes('## 工作经历')&&md.includes('**重点**')&&md.includes('*说明*'),md);
+});
+test('Word list paragraphs become real Markdown lists',()=>{
+ const md=htmlToMarkdown('<p style="mso-list:l0 level1 lfo1"><span style="mso-list:Ignore">• </span>第一项</p><p style="mso-list:l0 level1 lfo1"><span style="mso-list:Ignore">• </span>第二项</p>');
+ assert(md.includes('-   第一项')&&md.includes('-   第二项'),md);
+});
+test('raw Markdown copied with HTML is unchanged',()=>{
+ const source='# 标题\n\n**重点**\n\n| A | B |\n| --- | --- |';
+ assert(readClipboard({plain:source,html:'<pre>'+source+'</pre>'}).text===source,'Markdown was rewritten');
+ assert(readClipboard({plain:'- first\n- second',html:'<pre>- first\n- second</pre>'}).text==='- first\n- second','source list was rewritten');
+ assert(readClipboard({plain:'*斜体*',html:'<pre>*斜体*</pre>'}).text==='*斜体*','source emphasis was rewritten');
+});
+test('plain text and explicit Markdown clipboard types',()=>{
+ assert(readClipboard({plain:'普通文字\n下一行'}).text==='普通文字\n下一行','plain text changed');
+ assert(readClipboard({plain:'标题',html:'<h1>标题</h1>',markdown:'# 标题'}).text==='# 标题','explicit Markdown not preferred');
+});
+test('unsafe elements and javascript URLs are discarded',()=>{
+ const md=htmlToMarkdown('<h2>安全内容</h2><script>alert(1)<\/script><style>body{display:none}</style><a href="javascript:alert(1)">标签</a><iframe src="https://example.com"></iframe>');
+ assert(md.includes('## 安全内容')&&md.includes('标签')&&!md.includes('alert')&&!md.includes('iframe')&&!md.includes('display:none'),md);
+});
+test('code and strikethrough remain Markdown',()=>{
+ const md=htmlToMarkdown('<p><del>删除</del> <code>inline()</code></p><pre><code class="language-js">const value = 1;</code></pre>');
+ assert(md.includes('~~删除~~')&&md.includes('`inline()`')&&md.includes('```js')&&md.includes('const value = 1;'),md);
+});
+test('empty HTML does not erase available text',()=>assert(readClipboard({plain:'保留文字',html:'<style>x</style>'}).text==='保留文字','fallback missing'));
+test('paste replaces the selected range and updates input',()=>{
+ const target=document.getElementById('target');target.value='before OLD after';target.focus();target.setSelectionRange(7,10);
+ let updates=0;target.addEventListener('input',()=>updates++);installPasteHandler(target,{onChange:()=>updates++});
+ const data=new DataTransfer();data.setData('text/plain','标题');data.setData('text/html','<h2>标题</h2>');
+ const event=new ClipboardEvent('paste',{clipboardData:data,bubbles:true,cancelable:true});target.dispatchEvent(event);
+ assert(event.defaultPrevented&&target.value==='before ## 标题 after'&&updates>0,target.value);
+});
+document.getElementById('result').textContent=results.every(r=>r.passed)?`PASS ${results.length}/${results.length}`:'FAIL';
+document.getElementById('details').textContent=JSON.stringify(results,null,2);
+</script></html>

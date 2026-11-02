@@ -23,7 +23,7 @@
       <div class="editor-tools" role="toolbar" aria-label="插入 Markdown"><button data-insert="heading" title="插入标题">H₂</button><button data-insert="bold" title="加粗"><b>B</b></button><button data-insert="list" title="插入列表">☷</button><button data-insert="table" title="插入表格">▦</button><button data-insert="link" title="插入链接">↗</button><button data-insert="pagebreak" title="插入分页">⇥</button><span></span><button id="sample-button" title="载入虚构简历">示例</button></div>
       <div class="editor-body"><textarea id="editor" aria-label="Markdown 内容" spellcheck="false" placeholder="# 文档标题&#10;&#10;在这里写下你的内容……"></textarea></div>
       <div class="editor-footer"><span><b id="word-count">0</b> 字符</span><button id="save-md" class="text-button">保存 Markdown ↗</button></div>
-      <div class="editor-note"><span>↳</span><p>文字负责表达，版式交给纸间。<br><small>支持标题、列表、表格、引用、代码和链接。</small></p></div>
+      <div class="editor-note"><span>↳</span><p>直接粘贴，保留内容结构。<br><small>富文本自动转为 Markdown；Ctrl+Shift+V 粘贴纯文本。</small></p></div>
     </section>
 
     <section class="preview-panel" aria-label="真实 PDF 预览">
@@ -47,7 +47,7 @@
     </aside>
   </main>
   <input type="file" id="file-input" accept=".md,.markdown,.txt,text/plain,text/markdown" hidden>
-  <dialog id="guide"><button class="dialog-close" aria-label="关闭说明">×</button><span class="eyebrow">PAPERFORM / NOTES</span><h2>看见什么，就保存什么。</h2><p>左侧编辑 Markdown，右侧调整样式。中间显示的是已生成 PDF 的真实页面，而不是另一套 HTML 排版。</p><ol><li>粘贴内容，或导入 UTF-8 的 .md 文件。</li><li>选择风格，调整字号、行距与页边距。</li><li>等到状态显示「已同步」，检查每一页，然后下载。</li></ol><p><b>手动分页：</b>单独一行写 <code>&lt;!-- pagebreak --&gt;</code>。标题会尽量与后续内容同页，表头会在下一页重复。</p><p>当前支持标准 Markdown 和 GFM 表格。不执行 HTML/CSS；图片、数学公式和 Mermaid 暂不渲染，遇到时会明确提示。超过支持范围的内容请先修改，不会静默导出。</p><p class="subtle">文档在当前浏览器生成，不发送到转换服务器。草稿保存在这台设备的浏览器存储中；清除浏览器数据会删除草稿。罕见文字或 Emoji 仍需检查实际预览。</p></dialog>
+  <dialog id="guide"><button class="dialog-close" aria-label="关闭说明">×</button><span class="eyebrow">PAPERFORM / NOTES</span><h2>看见什么，就保存什么。</h2><p>左侧编辑 Markdown，右侧调整样式。中间显示的是已生成 PDF 的真实页面，而不是另一套 HTML 排版。</p><ol><li>粘贴内容，或导入 UTF-8 的 .md 文件。网页、Word 等富文本的标题、加粗、列表、链接和表格会自动转换成 Markdown；已有 Markdown 源码保持原样。</li><li>选择风格，调整字号、行距与页边距。</li><li>等到状态显示「已同步」，检查每一页，然后下载。</li></ol><p>使用 Ctrl+Shift+V 可粘贴纯文本。如果复制来源只提供纯文本，无法恢复已经丢失的格式。富文本的颜色、字体、复杂合并单元格不会原样还原，版式由右侧设置统一控制。</p><p><b>手动分页：</b>单独一行写 <code>&lt;!-- pagebreak --&gt;</code>。标题会尽量与后续内容同页，表头会在下一页重复。</p><p>当前支持标准 Markdown 和 GFM 表格。不执行 HTML/CSS；图片、数学公式和 Mermaid 暂不渲染，遇到时会明确提示。超过支持范围的内容请先修改，不会静默导出。</p><p class="subtle">文档在当前浏览器生成，不发送到转换服务器。草稿保存在这台设备的浏览器存储中；清除浏览器数据会删除草稿。罕见文字或 Emoji 仍需检查实际预览。</p></dialog>
   <dialog id="comparison"><button class="dialog-close" aria-label="关闭实测">×</button><span class="eyebrow">FIELD NOTES / 2026.10.21</span><h2>同一份简历，三种结果。</h2><p>使用一份含中英文、表格、列表与链接的虚构简历，按各站默认设置实际下载并检查 PDF。以下仅代表本次样本与设置。</p><div class="result-row"><b>CloudConvert</b><span>1 页 · 23.95 MB</span><p>只保留到「工作经历」标题，后续正文缺失。输出纸张为 420 × 595 pt。</p></div><div class="result-row"><b>MarkdownToPDF</b><span>2 页 · 78.6 KB</span><p>内容完整、中文正常。有编辑预览和主题设置，但「项目经历」标题与正文跨页。</p></div><div class="result-row"><b>pdfforge</b><span>3 页 · 134.1 KB</span><p>内容完整。前两页为 A4，末尾附加了一张 Letter 空白页，默认排版较宽松。</p></div><p><b>纸间的选择：</b>先排出真实 PDF，再预览同一份文件。下载保存当前预览的字节，避免再次排版带来的偏差。</p><a href="sample-resume.md" download class="button secondary">下载同一份测试简历</a></dialog>
   <div id="toast" role="status" aria-live="polite"></div>
 </body></html>

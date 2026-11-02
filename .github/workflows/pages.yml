@@ -31,7 +31,9 @@ jobs:
         with:
           node-version: '24'
       - name: Check JavaScript syntax
-        run: node --check dist/app.js
+        run: |
+          node --check dist/app.js
+          node --check dist/clipboard.js
       - name: Validate deployable assets
         run: node scripts/check-static.mjs
       - name: Configure GitHub Pages

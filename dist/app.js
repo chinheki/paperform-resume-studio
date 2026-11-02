@@ -1,5 +1,6 @@
 import { marked } from './vendor/marked.esm.js';
 import * as pdfjs from './vendor/pdf.mjs';
+import { installPasteHandler } from './clipboard.js';
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL('./vendor/pdf.worker.mjs', import.meta.url).href;
 const $ = id => document.getElementById(id);
@@ -185,6 +186,7 @@ $('download').addEventListener('click',()=>{
 });
 $('save-md').onclick=()=>downloadBlob(new Blob([$ ('editor').value],{type:'text/markdown;charset=utf-8'}),cleanName()+'.md');
 $('editor').addEventListener('input',markDirty);
+installPasteHandler($('editor'),{onChange:markDirty,onConverted:()=>toast('已保留格式并转换为 Markdown'),onError:()=>toast('格式转换失败，已按纯文本粘贴，请检查内容。')});
 $('filename').addEventListener('input',markDirty);
 $('editor').addEventListener('keydown',event=>{
   if(event.key==='Tab'){event.preventDefault();insert('  ','');}
