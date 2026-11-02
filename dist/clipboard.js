@@ -60,7 +60,7 @@ export function readClipboard({plain='',html='',markdown=''}={}){
   if(markdown)return {text:markdown,converted:false};
   // Source editors commonly put the source text in both plain-text and HTML clipboard formats.
   // Never escape or rewrite Markdown that is already present in the plain-text representation.
-  const sourceList=/(^|\n) {0,3}(?:[-+*]|\d+[.)])[ \t]+/.test(plain)&&!/<(?:h[1-6]|li|table)\b/i.test(html);
+  const sourceList=/(^|\n) {0,3}(?:[-+*]|\d+[.)])[ \t]+/.test(plain)&&!/<(?:h[1-6]|li|table)\b|mso-list\s*:|MsoHeading/i.test(html);
   if(!html||markdownSyntax.test(plain)||sourceList)return {text:plain,converted:false};
   const text=htmlToMarkdown(html);
   return {text:text||plain,converted:!!text};
